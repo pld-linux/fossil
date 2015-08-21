@@ -1,14 +1,14 @@
 Summary:	Simple, high-reliability, distributed software configuration management
 Summary(pl.UTF-8):	Proste, wiarygodne, rozproszone zarządzanie konfiguracją oprogramowania
 Name:		fossil
-Version:	1.20
+Version:	1.33
 Release:	1
 License:	BSD
 Group:		Development/Version Control
 # see URL below for mapping between Version and date
 #Source0Download: http://www.fossil-scm.org/download.html
-Source0:	http://www.fossil-scm.org/download/%{name}-src-20111021125253.tar.gz
-# Source0-md5:	d3bd7d3bf60b523578f37315cd8a8f12
+Source0:	http://www.fossil-scm.org/download/%{name}-src-%{version}.tar.gz
+# Source0-md5:	53f8145084a2065d6cb734980c172c7e
 URL:		http://www.fossil-scm.org/
 BuildRequires:	openssl-devel
 BuildRequires:	readline-devel
@@ -50,20 +50,22 @@ stronie podającej szczegółową historię oraz informacje o stanie
 projektu w postaci graficznej.
 
 %prep
-%setup -q -n %{name}-src-20111021125253
+%setup -q -n %{name}-src-%{version}
+
+%{__rm} src/sqlite3.c
 
 %build
 # some tcl-based strangeness, not autoconf configure
 CC="%{__cc}" \
 CFLAGS="%{rpmcflags}" \
 CPPFLAGS="%{rpmcppflags}" \
-./configure
+./configure \
+	--disable-internal-sqlite \
+	--with-openssl=auto
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_bindir}
-
 %{__make} install \
 	INSTALLDIR=$RPM_BUILD_ROOT%{_bindir}
 
