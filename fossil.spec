@@ -2,7 +2,7 @@ Summary:	Simple, high-reliability, distributed software configuration management
 Summary(pl.UTF-8):	Proste, wiarygodne, rozproszone zarządzanie konfiguracją oprogramowania
 Name:		fossil
 Version:	1.33
-Release:	2
+Release:	3
 License:	BSD
 Group:		Development/Version Control
 # see URL below for mapping between Version and date
