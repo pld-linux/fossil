@@ -1,17 +1,18 @@
 Summary:	Simple, high-reliability, distributed software configuration management
 Summary(pl.UTF-8):	Proste, wiarygodne, rozproszone zarządzanie konfiguracją oprogramowania
 Name:		fossil
-Version:	1.33
-Release:	3
+Version:	2.7
+Release:	1
 License:	BSD
 Group:		Development/Version Control
 # see URL below for mapping between Version and date
 #Source0Download: http://www.fossil-scm.org/download.html
-Source0:	http://www.fossil-scm.org/download/%{name}-src-%{version}.tar.gz
-# Source0-md5:	53f8145084a2065d6cb734980c172c7e
+Source0:	https://www.fossil-scm.org/index.html/uv/%{name}-src-%{version}.tar.gz
+# Source0-md5:	b00819c45cb6518065540ce0704b0884
 URL:		http://www.fossil-scm.org/
 BuildRequires:	openssl-devel
 BuildRequires:	readline-devel
+BuildRequires:	sqlite3-devel >= 3.25.0
 BuildRequires:	tcl >= 8.5
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -50,7 +51,7 @@ stronie podającej szczegółową historię oraz informacje o stanie
 projektu w postaci graficznej.
 
 %prep
-%setup -q -n %{name}-src-%{version}
+%setup -q
 
 %{__rm} src/sqlite3.c
 
