@@ -2,7 +2,7 @@ Summary:	Simple, high-reliability, distributed software configuration management
 Summary(pl.UTF-8):	Proste, wiarygodne, rozproszone zarządzanie konfiguracją oprogramowania
 Name:		fossil
 Version:	2.7
-Release:	1
+Release:	2
 License:	BSD
 Group:		Development/Version Control
 # see URL below for mapping between Version and date
@@ -60,6 +60,7 @@ projektu w postaci graficznej.
 CC="%{__cc}" \
 CFLAGS="%{rpmcflags}" \
 CPPFLAGS="%{rpmcppflags}" \
+LIBS="-lresolv" \
 ./configure \
 	--disable-internal-sqlite \
 	--with-openssl=auto
