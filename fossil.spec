@@ -1,18 +1,22 @@
+#
+# Conditional build:
+%bcond_with	system_sqlite	# system SQLite 3 (required features: FTS4, JSON1, DBSTAT_VTAB)
+
 Summary:	Simple, high-reliability, distributed software configuration management
 Summary(pl.UTF-8):	Proste, wiarygodne, rozproszone zarządzanie konfiguracją oprogramowania
 Name:		fossil
-Version:	2.7
-Release:	2
+Version:	2.16
+Release:	1
 License:	BSD
 Group:		Development/Version Control
 # see URL below for mapping between Version and date
-#Source0Download: http://www.fossil-scm.org/download.html
-Source0:	https://www.fossil-scm.org/index.html/uv/%{name}-src-%{version}.tar.gz
-# Source0-md5:	b00819c45cb6518065540ce0704b0884
-URL:		http://www.fossil-scm.org/
+#Source0Download: https://www.fossil-scm.org/home/uv/download.html
+Source0:	https://www.fossil-scm.org/home/tarball/7aedd5675883d4412cf20917d340b6985e3ecb842e88a39f135df034b2d5f4d3/%{name}-src-%{version}.tar.gz
+# Source0-md5:	0872a4f1fa348b7d1736ed5d323aebec
+URL:		https://www.fossil-scm.org/
 BuildRequires:	openssl-devel
 BuildRequires:	readline-devel
-BuildRequires:	sqlite3-devel >= 3.25.0
+%{?with_system_sqlite:BuildRequires:	sqlite3-devel >= 3.35.0}
 BuildRequires:	tcl >= 8.5
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -51,9 +55,11 @@ stronie podającej szczegółową historię oraz informacje o stanie
 projektu w postaci graficznej.
 
 %prep
-%setup -q
+%setup -q -n %{name}-src-%{version}
 
-%{__rm} src/sqlite3.c
+%if %{with system_sqlite}
+%{__rm} src/sqlite3.[ch]
+%endif
 
 %build
 # some tcl-based strangeness, not autoconf configure
@@ -62,12 +68,13 @@ CFLAGS="%{rpmcflags}" \
 CPPFLAGS="%{rpmcppflags}" \
 LIBS="-lresolv" \
 ./configure \
-	--disable-internal-sqlite \
+	%{?with_system_sqlite:--disable-internal-sqlite} \
 	--with-openssl=auto
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	INSTALLDIR=$RPM_BUILD_ROOT%{_bindir}
 
@@ -76,5 +83,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc COPYRIGHT-BSD2.txt
+%doc COPYRIGHT-BSD2.txt README.md
 %attr(755,root,root) %{_bindir}/fossil
